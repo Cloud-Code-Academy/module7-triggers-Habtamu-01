@@ -380,7 +380,7 @@ public with sharing class TriggerTest {
                     StageName = 'Prospecting',
                     Amount = 6000,
                     AccountId = acc.Id,
-                    Primary_Contact__c = null
+                    Primary_Cont__c = null
                 );
                 opportunitiesToInsert.add(opp);
             }
@@ -400,11 +400,11 @@ public with sharing class TriggerTest {
         Test.stopTest();
 
         // Check that the primary contact is set correctly
-        List<Opportunity> updatedOpportunities = [SELECT Primary_Contact__c, Primary_Contact__r.FirstName, Primary_Contact__r.Title FROM Opportunity WHERE Id IN :opportunitiesToInsert];
+        List<Opportunity> updatedOpportunities = [SELECT Primary_Cont__c, Primary_Cont__r.FirstName, Primary_Cont__r.Title FROM Opportunity WHERE Id IN :opportunitiesToInsert];
         for (Opportunity opp : updatedOpportunities) {
-            System.assertNotEquals(null, opp.Primary_Contact__c, 'Primary contact was not set.');
-            System.assertEquals(opp.Primary_Contact__r.FirstName, 'Big Boss', 'Primary contact was not set correctly.');
-            System.assertEquals(opp.Primary_Contact__r.Title, 'CEO', 'Primary contact was not set correctly.');
+            System.assertNotEquals(null, opp.Primary_Cont__c, 'Primary contact was not set.');
+            System.assertEquals(opp.Primary_Cont__r.FirstName, 'Big Boss', 'Primary contact was not set correctly.');
+            System.assertEquals(opp.Primary_Cont__r.Title, 'CEO', 'Primary contact was not set correctly.');
         }
     }
 
