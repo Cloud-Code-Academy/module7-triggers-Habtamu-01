@@ -4,7 +4,7 @@ public with sharing class OpportunityTriggerHandler {
     for(Opportunity opp : oppList){
         Opportunity oldOpp = oldMap.get(opp.Id); //for each record retrieve old version from oldMap 
         if(opp.Amount <= 5000 && opp.Amount != oldOpp.Amount){
-            opp.addError('Amount must be greater than 5000.');
+            opp.addError('Opportunity amount must be greater than 5000.');
         }
     }
 
@@ -20,14 +20,14 @@ public with sharing class OpportunityTriggerHandler {
     }
     //Query accounts to check for Banking type
     Map<Id, Account> accMap = new Map<Id, Account>(
-        [SELECT Id, Type FROM Account WHERE Id IN :accountIds]
+        [SELECT Id, Industry FROM Account WHERE Id IN :accountIds]
         );
 
    //Validation
    for(opportunity opp : oldList){
     if(opp.StageName == 'Closed Won' && opp.AccountId != null){
         Account acc = accMap.get(opp.AccountId);
-        if(acc != null && acc.Type == 'Banking'){
+        if(acc != null && acc.Industry == 'Banking'){
             opp.addError('Cannot delete Closed Won opportunities for Banking accounts.');
         }
     }
