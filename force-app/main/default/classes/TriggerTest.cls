@@ -20,6 +20,7 @@
 * NOTE: Disable all duplicate rules in the org. This will help prevent errors in the test classes or triggers. https://help.salesforce.com/s/articleView?id=sfdo.EDA_Disable_Matching_Rules.htm&type=5
 * Click Setup, then click Setup.> From Setup, enter Matching Rules in the Quick Find box, then click Matching Rules. > Click Deactivate next all to the rule that needs to be disabled.
 */
+//I have deactivated all duplicate rules in the org
 
 @IsTest
 public with sharing class TriggerTest {
@@ -335,7 +336,7 @@ public with sharing class TriggerTest {
             delete opportunitiesToInsert;
             System.assert(false, 'Expected an exception but did not get one.');
         } catch (DmlException e) {
-            System.assert(e.getMessage().contains('Cannot delete closed opportunity for a banking account that is won'), 'The error message is not as expected.');
+            System.assert(e.getMessage().contains('Cannot delete Closed Won opportunities for Banking accounts.'));
         }
         Test.stopTest();
     }
@@ -380,7 +381,7 @@ public with sharing class TriggerTest {
                     StageName = 'Prospecting',
                     Amount = 6000,
                     AccountId = acc.Id,
-                    Primary_Contact__c = null
+                    Primary_Cont__c = null
                 );
                 opportunitiesToInsert.add(opp);
             }
@@ -400,11 +401,11 @@ public with sharing class TriggerTest {
         Test.stopTest();
 
         // Check that the primary contact is set correctly
-        List<Opportunity> updatedOpportunities = [SELECT Primary_Contact__c, Primary_Contact__r.FirstName, Primary_Contact__r.Title FROM Opportunity WHERE Id IN :opportunitiesToInsert];
+        List<Opportunity> updatedOpportunities = [SELECT Primary_Cont__c, Primary_Cont__r.FirstName, Primary_Cont__r.Title FROM Opportunity WHERE Id IN :opportunitiesToInsert];
         for (Opportunity opp : updatedOpportunities) {
-            System.assertNotEquals(null, opp.Primary_Contact__c, 'Primary contact was not set.');
-            System.assertEquals(opp.Primary_Contact__r.FirstName, 'Big Boss', 'Primary contact was not set correctly.');
-            System.assertEquals(opp.Primary_Contact__r.Title, 'CEO', 'Primary contact was not set correctly.');
+            System.assertNotEquals(null, opp.Primary_Cont__c, 'Primary contact was not set.');
+            System.assertEquals(opp.Primary_Cont__r.FirstName, 'Big Boss', 'Primary contact was not set correctly.');
+            System.assertEquals(opp.Primary_Cont__r.Title, 'CEO', 'Primary contact was not set correctly.');
         }
     }
 
